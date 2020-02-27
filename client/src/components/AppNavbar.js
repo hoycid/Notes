@@ -22,7 +22,6 @@ class AppNavbar extends Component {
     }
 
     render() {
-
         return (
             <div>
                 <Navbar className="mb-5" color="dark" dark expand="sm">

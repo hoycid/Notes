@@ -33,7 +33,7 @@ class Notes extends Component {
                                     <div>Author: {author}</div>
                                     <div>Priority: {priority}</div>
                                     <div>Date created: {dateCreated}</div>
-                                    {completed ? <div><div>Completed: {completed}</div> <div>Date completed: {dateCompleted}</div></div> : ""}
+                                    {true ? <div><div>Completed: {completed}</div> <div>Date completed: {dateCompleted}</div></div> : ""}
                                     <Button
                                         className="remove-btn"
                                         color="danger"
@@ -46,9 +46,7 @@ class Notes extends Component {
                                         className="remove-btn"
                                         color="success"
                                         size="sm"
-                                        onClick={e => {
-                                            this.onComplete.bind(this, _id)
-                                        }}
+                                        onClick={this.onComplete.bind(this, _id)}
                                     >
                                         Complete
                                     </Button>
