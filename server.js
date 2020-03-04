@@ -6,10 +6,15 @@ const path = require('path');
 const app = express();
 
 //Bodyparser middleware
-app.use(express.json()); //app.use(bodyParser.json());
+app.use(express.json()); 
+//app.use(bodyParser.json());
 
 // DB Config
 const db = require('./config/keys').mongoURI;
+
+// Cors
+const cors = require("cors");
+app.use(cors());
 
 // Connect to Mongo
 mongoose
@@ -19,7 +24,6 @@ mongoose
 
 // Use Routes
 app.use('/api/notes', require('./routes/api/notes'));
-app.use('/api/users', require('./routes/api/users'));
 
 // Serve static assets if in production
 if(process.env.NODE_ENV === 'production') {

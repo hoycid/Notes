@@ -1,4 +1,4 @@
-import { GET_NOTES, ADD_NOTE, DELETE_NOTE, NOTES_LOADING } from '../actions/types';
+import { GET_NOTES, ADD_NOTE, DELETE_NOTE, NOTES_LOADING, SET_COMPLETE } from '../actions/types';
 
 const  initialState = {
     notes: [],
@@ -27,6 +27,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 loading: true
+            };
+        case SET_COMPLETE:
+            return {
+                ...state,
+                loading: false
             };
         default:
             return state;
