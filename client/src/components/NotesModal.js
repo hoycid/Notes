@@ -6,9 +6,9 @@ import {
   ModalBody,
   Form,
   FormGroup,
-  Label,
   Input
 } from "reactstrap";
+import { Editor } from '@tinymce/tinymce-react';
 import { connect } from "react-redux";
 import { addNote } from "../actions/noteActions";
 
@@ -16,9 +16,9 @@ class NotesModal extends Component {
   state = {
     modal: false,
     title: "",
-    description:  "",
-    author:  "",
-    priority:  "",
+    description: "",
+    author: "",
+    priority: "",
   };
 
   toggle = () => {
@@ -35,6 +35,9 @@ class NotesModal extends Component {
     this.setState({ priority: e.target.value });
   };
 
+  handleEditorChange = (content, editor) => {
+    this.setState({description: content})
+  }
 
   onSubmit = e => {
     e.preventDefault();
@@ -55,7 +58,6 @@ class NotesModal extends Component {
   };
 
   render() {
-    console.log(this.state)
     return (
       <div>
         <Button
@@ -70,32 +72,40 @@ class NotesModal extends Component {
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for="title">Title</Label>
                 <Input
                   type="text"
                   name="title"
                   id="title"
-                  placeholder=""
+                  placeholder="Title"
                   onChange={this.onChange}
                 />
-                <Label for="desc">Description</Label>
-                <Input
-                  type="text"
-                  name="description"
-                  id="desc"
-                  placeholder=""
-                  onChange={this.onChange}
+                <Editor
+                  initialValue=""
+                  init={{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                      'advlist autolink lists link image charmap print preview anchor',
+                      'searchreplace visualblocks code fullscreen',
+                      'insertdatetime media table paste code help wordcount'
+                    ],
+                    toolbar:
+                      'undo redo | formatselect | bold italic backcolor | \
+                      alignleft aligncenter alignright alignjustify | \
+                      bullist numlist outdent indent | removeformat | help'
+                  }}
+                  onEditorChange={this.handleEditorChange}
                 />
-                <Label for="author">Author</Label>
                 <Input
                   type="text"
                   name="author"
                   id="author"
-                  placeholder=""
+                  placeholder="Author"
                   onChange={this.onChange}
                 />
-                <label>Priority</label>
-                <div className="form-group">
+              </FormGroup>
+              <div className="form-group">
+                  <label>Priority:</label>{"  "}
                     <div className="form-check form-check-inline">
                     <input
                         className="form-check-input"
@@ -108,7 +118,7 @@ class NotesModal extends Component {
                     />
                     <label className="form-check-label">Low</label>
                     </div>
-                    <div className="form-check form-check-inline">
+                    <div className="form-check form-check-inline" style={{ margin: "auto" }}>
                     <input
                         className="form-check-input"
                         type="radio"
@@ -118,7 +128,7 @@ class NotesModal extends Component {
                         checked={this.state.priority === "medium"}
                         onChange={this.onPriorityChange}
                     />
-                    <label className="form-check-label">Medium</label>
+                    <label className="form-check-label">Medium</label>{" "}
                     </div>
                     <div className="form-check form-check-inline">
                     <input
@@ -136,7 +146,6 @@ class NotesModal extends Component {
                 <Button color="dark" style={{ marginTop: "2rem" }} block>
                   Add note
                 </Button>
-              </FormGroup>
             </Form>
           </ModalBody>
         </Modal>
