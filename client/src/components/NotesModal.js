@@ -8,7 +8,7 @@ import {
   FormGroup,
   Input
 } from "reactstrap";
-import { Editor } from '@tinymce/tinymce-react';
+import { Editor } from "@tinymce/tinymce-react";
 import { connect } from "react-redux";
 import { addNote } from "../actions/noteActions";
 
@@ -16,9 +16,9 @@ class NotesModal extends Component {
   state = {
     modal: false,
     title: "",
-    description: "",
+    description: {},
     author: "",
-    priority: "",
+    priority: ""
   };
 
   toggle = () => {
@@ -36,18 +36,20 @@ class NotesModal extends Component {
   };
 
   handleEditorChange = (content, editor) => {
-    this.setState({description: content})
-  }
+    let doc = new DOMParser().parseFromString(content, "text/html");
+    const string = doc.body.textContent || "" ;
+    this.setState({ description: string });
+  };
 
   onSubmit = e => {
     e.preventDefault();
 
     const newNote = {
-        title: this.state.title,
-        description: this.state.description,
-        author: this.state.author,
-        priority: this.state.priority,
-        completed:  false
+      title: this.state.title,
+      description: this.state.description,
+      author: this.state.author,
+      priority: this.state.priority,
+      completed: false
     };
 
     // Add note via addNote action
@@ -61,11 +63,11 @@ class NotesModal extends Component {
     return (
       <div>
         <Button
-          color="dark"
-          style={{ marginBottom: "2rem" }}
+          color="success"
+          style={{ marginBottom: "2rem", borderRadius: "50%" }}
           onClick={this.toggle}
         >
-          New note
+          +
         </Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Create new note</ModalHeader>
@@ -82,17 +84,17 @@ class NotesModal extends Component {
                 <Editor
                   initialValue=""
                   init={{
-                    height: 500,
+                    height: 350,
                     menubar: false,
                     plugins: [
-                      'advlist autolink lists link image charmap print preview anchor',
-                      'searchreplace visualblocks code fullscreen',
-                      'insertdatetime media table paste code help wordcount'
+                      "advlist autolink lists link image charmap print preview anchor",
+                      "searchreplace visualblocks code fullscreen",
+                      "insertdatetime media table paste code help wordcount"
                     ],
                     toolbar:
-                      'undo redo | formatselect | bold italic backcolor | \
+                      "undo redo | formatselect | bold italic backcolor | \
                       alignleft aligncenter alignright alignjustify | \
-                      bullist numlist outdent indent | removeformat | help'
+                      bullist numlist outdent indent | removeformat | help"
                   }}
                   onEditorChange={this.handleEditorChange}
                 />
@@ -105,47 +107,48 @@ class NotesModal extends Component {
                 />
               </FormGroup>
               <div className="form-group">
-                  <label>Priority:</label>{"  "}
-                    <div className="form-check form-check-inline">
-                    <input
-                        className="form-check-input"
-                        type="radio"
-                        name="priorityOptions"
-                        id="priorityLow"
-                        value="low"
-                        checked={this.state.priority === "low"}
-                        onChange={this.onPriorityChange}
-                    />
-                    <label className="form-check-label">Low</label>
-                    </div>
-                    <div className="form-check form-check-inline" style={{ margin: "auto" }}>
-                    <input
-                        className="form-check-input"
-                        type="radio"
-                        name="priorityOptions"
-                        id="priorityMedium"
-                        value="medium"
-                        checked={this.state.priority === "medium"}
-                        onChange={this.onPriorityChange}
-                    />
-                    <label className="form-check-label">Medium</label>{" "}
-                    </div>
-                    <div className="form-check form-check-inline">
-                    <input
-                        className="form-check-input"
-                        type="radio"
-                        name="priorityOptions"
-                        id="priorityHigh"
-                        value="high"
-                        checked={this.state.priority === "high"}
-                        onChange={this.onPriorityChange}
-                    />
-                    <label className="form-check-label">High</label>
-                    </div>
+                <label>Priority:</label>
+                {"  "}
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="priorityOptions"
+                    id="priorityLow"
+                    value="low"
+                    checked={this.state.priority === "low"}
+                    onChange={this.onPriorityChange}
+                  />
+                  <label className="form-check-label">Low</label>
                 </div>
-                <Button color="dark" style={{ marginTop: "2rem" }} block>
-                  Add note
-                </Button>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="priorityOptions"
+                    id="priorityMedium"
+                    value="medium"
+                    checked={this.state.priority === "medium"}
+                    onChange={this.onPriorityChange}
+                  />
+                  <label className="form-check-label">Medium</label>{" "}
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="priorityOptions"
+                    id="priorityHigh"
+                    value="high"
+                    checked={this.state.priority === "high"}
+                    onChange={this.onPriorityChange}
+                  />
+                  <label className="form-check-label">High</label>
+                </div>
+              </div>
+              <Button color="dark" style={{ marginTop: "2rem" }} block>
+                Add note
+              </Button>
             </Form>
           </ModalBody>
         </Modal>

@@ -19,3 +19,7 @@
     opacity: 0.01;
     transition: opacity 800ms ease-in;
 }
+
+body {
+    background-color: #282c34;
+  }
