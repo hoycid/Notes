@@ -29,7 +29,7 @@ class Notes extends Component {
                             <CSSTransition key={_id} classNames="fade" timeout={500}>
                                 <ListGroupItem>
                                     <div>Title: {title}</div>
-                                    <div>Description: {description}</div>
+                                    <div>Description: {description.substr(3).slice(0, -4)}</div>
                                     <div>Author: {author}</div>
                                     <div>Priority: {priority}</div>
                                     <div>Date created: {dateCreated}</div>
