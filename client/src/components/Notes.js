@@ -103,7 +103,7 @@ class Notes extends Component {
                         </div>
                         <div>
                           Date created:{" "}
-                          <Moment format="MM/DD/YYYY">{dateCreated}</Moment>{" "}
+                          <Moment format="LLL">{dateCreated}</Moment>{" "}
                           <Badge pill>
                             <Moment fromNow>{dateCreated}</Moment>
                           </Badge>
@@ -112,7 +112,7 @@ class Notes extends Component {
                           <div>
                             <div>
                               Date completed:{" "}
-                              <Moment format="MM/DD/YYYY">
+                              <Moment format="LLL">
                                 {dateCompleted}
                               </Moment>{" "}
                               <Badge pill>
