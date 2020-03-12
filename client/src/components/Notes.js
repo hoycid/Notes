@@ -41,20 +41,25 @@ class Notes extends Component {
     this.props.getNotes();
   };
 
-  onDismiss = () => {
+  handleDragStop = layout => {
+    console.log(layout)
+    this.props.setLayout(layout)
+  }
+
+  handleDismiss = () => {
     this.setState({hasComplete: false})
   }
   render() {
     const { notes } = this.props.note;
     let count=0;
-    let layout = notes.map(_id => {
+    let noteslayout = notes.map(_id => {
       return { i: _id._id, x: count++, y: 0, w: 3, h: 3 };
     });
-    console.log(this.state)
+
     return (
       <Container>
         {this.state.hasComplete ? (
-          <Alert color="success" visible={this.setState.hasComplete} toggle={this.onDismiss}>{this.state.currentNote.title} has been completed!</Alert>
+          <Alert color="success" visible={this.setState.hasComplete} toggle={this.handleDismiss}>{this.state.currentNote.title} has been completed!</Alert>
         ) : (
           ""
         )}
@@ -62,10 +67,11 @@ class Notes extends Component {
         <TransitionGroup className="notes">
           <GridLayout
             className="layout"
-            layout={layout}
+            layout={noteslayout}
             cols={46}
-            rowHeight={30}
+            rowHeight={45}
             width={4600}
+            onDragStop={this.handleDragStop}
           >
             {notes.map(
               ({
