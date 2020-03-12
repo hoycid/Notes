@@ -6,7 +6,8 @@ import {
   Badge,
   Toast,
   ToastHeader,
-  ToastBody
+  ToastBody,
+  Alert
 } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
@@ -19,6 +20,11 @@ import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
 class Notes extends Component {
+  state = {
+    hasComplete: this.props.hasComplete,
+    visible: false,
+    currentNote: null
+  }
   componentDidMount() {
     this.props.getNotes();
   }
@@ -28,23 +34,38 @@ class Notes extends Component {
   };
 
   onComplete = id => {
+    const { notes } = this.props.note;
+    const currentNote = notes.find(note => note._id === id)
+    this.setState({hasComplete: true, currentNote: currentNote})
     this.props.setComplete(id);
+    this.props.getNotes();
   };
 
+  onDismiss = () => {
+    this.setState({hasComplete: false})
+  }
   render() {
     const { notes } = this.props.note;
     let count=0;
-    let layout = notes.map(_id => { return {i: _id._id, x: count++, y: 0, w: 3, h: 3} })
-    console.log(this.props)
+    let layout = notes.map(_id => {
+      return { i: _id._id, x: count++, y: 0, w: 3, h: 3 };
+    });
+    console.log(this.state)
     return (
       <Container>
+        {this.state.hasComplete ? (
+          <Alert color="success" visible={this.setState.hasComplete} toggle={this.onDismiss}>{this.state.currentNote.title} has been completed!</Alert>
+        ) : (
+          ""
+        )}
+
         <TransitionGroup className="notes">
           <GridLayout
             className="layout"
             layout={layout}
-            cols={12}
+            cols={46}
             rowHeight={30}
-            width={1200}
+            width={4600}
           >
             {notes.map(
               ({
@@ -66,7 +87,6 @@ class Notes extends Component {
                             style={{ borderRadius: "0%" }}
                             color="none"
                             size="sm"
-                            textAlign="right"
                             onClick={this.onDeleteClick.bind(this, _id)}
                           >
                             ×
@@ -76,7 +96,6 @@ class Notes extends Component {
                               style={{ borderRadius: "0%" }}
                               color="none"
                               size="sm"
-                              textAlign="right"
                               onClick={this.onComplete.bind(this, _id)}
                             >
                               ✓
@@ -112,9 +131,7 @@ class Notes extends Component {
                           <div>
                             <div>
                               Date completed:{" "}
-                              <Moment format="LLL">
-                                {dateCompleted}
-                              </Moment>{" "}
+                              <Moment format="LLL">{dateCompleted}</Moment>{" "}
                               <Badge pill>
                                 <Moment fromNow>{dateCompleted}</Moment>
                               </Badge>{" "}

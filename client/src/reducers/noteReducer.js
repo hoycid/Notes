@@ -2,6 +2,7 @@ import { GET_NOTES, ADD_NOTE, DELETE_NOTE, NOTES_LOADING, SET_COMPLETE } from '.
 
 const  initialState = {
     notes: [],
+    hascomplete: false,
     loading: false
 };
 
@@ -31,6 +32,7 @@ export default function(state = initialState, action) {
         case SET_COMPLETE:
             return {
                 ...state,
+                hasComplete: true,
                 loading: false
             };
         default:
